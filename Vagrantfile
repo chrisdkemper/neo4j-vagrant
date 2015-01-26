@@ -1,13 +1,5 @@
 Vagrant.configure("2") do |config|
 
-	# Enable cache plugin
-    if Vagrant.has_plugin?("vagrant-cachier")
-        config.cache.auto_detect = false
-        config.cache.scope = :box
-        config.cache.enable :apt
-        config.cache.enable :composer
-    end
-
 	config.vm.box = "trusty64"
 	config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
 

@@ -9,6 +9,8 @@ Vagrant.configure("2") do |config|
 	config.vm.provider :virtualbox do |virtualbox|
 		virtualbox.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
 		virtualbox.customize ["modifyvm", :id, "--memory", "1024"]
+		virtualbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+		virtualbox.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
 	end
 
 	config.vm.provision :shell, :path => "env/provision.sh"

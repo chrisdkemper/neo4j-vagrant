@@ -13,5 +13,10 @@ Vagrant.configure("2") do |config|
 		virtualbox.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
 	end
 
-	config.vm.provision :shell, :path => "env/provision.sh"
+	config.vm.provision :puppet do |puppet|
+		puppet.options = ["--fileserverconfig=/vagrant/env/puppet/fileserver.conf"]
+		puppet.manifests_path = "env/puppet/manifests"
+		puppet.manifest_file = "default.pp"
+		puppet.module_path = "env/puppet/modules"
+	end
 end

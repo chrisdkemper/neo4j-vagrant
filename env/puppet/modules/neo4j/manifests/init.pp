@@ -1,11 +1,13 @@
 class neo4j {
 
     exec { 'Add neo4j key':
-        command => 'wget -O - http://debian.neo4j.org/neotechnology.gpg.key | apt-key add -'
+        command => 'wget -O - http://debian.neo4j.org/neotechnology.gpg.key | apt-key add -',
+        unless  => 'apt-key list | grep admins@neotechnology.com'
     }
     
     exec { 'Add neo4j repository':
-        command => "echo 'deb http://debian.neo4j.org/repo stable/' > /etc/apt/sources.list.d/neo4j.list"    
+        command => 'echo "deb http://debian.neo4j.org/repo stable/" > /etc/apt/sources.list.d/neo4j.list',
+        creates => '/etc/apt/sources.list.d/neo4j.list'
     }
     
     exec { 'Update repositories':
@@ -14,21 +16,21 @@ class neo4j {
     }
     
     package { 'neo4j':
-        ensure => present,
+        ensure  => present,
         require => Exec['Update repositories']
     }
     
     service { 'neo4j-service':
-        ensure => running,
+        ensure  => running,
         require => Package['neo4j']
     }
     
     file { '/etc/neo4j/neo4j-server.properties':
-        ensure => present,
-        owner => 'root',
-        group => 'root',
-        source => 'puppet:///data/modules/neo4j/templates/neo4j-server.properties',
+        ensure  => present,
+        owner   => 'neo4j',
+        group   => 'adm',
+        source  => 'puppet:///data/modules/neo4j/templates/neo4j-server.properties',
         require => Package['neo4j'],
-        notify => Service['neo4j-service']
+        notify  => Service['neo4j-service']
     }
 }

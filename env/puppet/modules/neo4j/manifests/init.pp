@@ -38,6 +38,7 @@ class neo4j {
         ensure  => present,
         owner   => 'neo4j',
         group   => 'nogroup',
+        mode    => 0600,
         source  => 'puppet:///data/modules/neo4j/templates/auth',
         require => Package['neo4j'],
         notify  => Service['neo4j-service']

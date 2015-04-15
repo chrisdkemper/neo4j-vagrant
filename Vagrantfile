@@ -6,6 +6,8 @@ Vagrant.configure("2") do |config|
 	config.vm.hostname = "neo4j.vagrant.local"
 	config.vm.network :forwarded_port, guest: 7474, host: 7474
 
+	config.vm.provision :shell, :inline => "ulimit -n 40000"
+
 	config.vm.provider :virtualbox do |virtualbox|
 		virtualbox.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
 		virtualbox.customize ["modifyvm", :id, "--memory", "1024"]
